@@ -41,6 +41,8 @@ dependencies:
   firebase_analytics: ^11.2.1
   google_sign_in: ^6.2.1
   http: ^1.2.2
+  firebase_auth: ^5.1.4
+  speech_to_text: ^6.6.2
 
 dev_dependencies:
   flutter_test:

@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:convert' show json;
+
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'firebase_options.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:lingua/authentication.dart';
+
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +45,7 @@ Future<void> main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-
+  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const MyApp());
 }
 
@@ -57,23 +61,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const Authentication(),
     );
   }
 }
 
 /// The scopes required by this application.
 // #docregion Initialize
-const List<String> scopes = <String>[
-  'email',
-  'https://www.googleapis.com/auth/contacts.readonly',
-];
+// const List<String> scopes = <String>[
+//   'email',
+//   'https://www.googleapis.com/auth/contacts.readonly',
+// ];
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  // clientId: 'your-client_id.apps.googleusercontent.com',
-  scopes: scopes,
-);
+    // Optional clientId
+    // clientId: 'your-client_id.apps.googleusercontent.com',
+    // scopes: scopes,
+    );
 
 // #enddocregion Initialize
 class MyHomePage extends StatefulWidget {
@@ -99,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bool isAuthorized = account != null;
       // However, on web...
       if (kIsWeb && account != null) {
-        isAuthorized = await _googleSignIn.canAccessScopes(scopes);
+        //  isAuthorized = await _googleSignIn.canAccessScopes(scopes);
       }
 // #enddocregion CanAccessScopes
 
@@ -200,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // On the web, this must be called from an user interaction (button click).
   // #docregion RequestScopes
   Future<void> _handleAuthorizeScopes() async {
-    final bool isAuthorized = await _googleSignIn.requestScopes(scopes);
+    const bool isAuthorized = true; //await _googleSignIn.requestScopes(scopes);
     // #enddocregion RequestScopes
     setState(() {
       _isAuthorized = isAuthorized;
