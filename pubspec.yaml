@@ -43,6 +43,7 @@ dependencies:
   http: ^1.2.2
   firebase_auth: ^5.1.4
   speech_to_text: ^6.6.2
+  flutter_tts: ^4.0.2
 
 dev_dependencies:
   flutter_test:
